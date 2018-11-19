@@ -32,3 +32,27 @@ self.addEventListener('install' , (e) =>{
     })
   );
 });
+
+self.addEventListener('activate' , (e) =>{
+  console.log('Service Worker : Activate')
+  e.waitUntil(
+    caches.keys().then((keyList) =>{
+      return Promise.all(keyList.map((key)=>{
+        if(key !== cacheName){
+          console.log('Service Worker = removing old cache key ' , key);
+          return caches.delete(key)
+        }
+      }));
+    })
+  );
+});
+
+
+self.addEventListener('fetch' , (e) =>{
+  console.log('Service Worker   =  FETCH' , e.request.url)
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request)
+    })
+  )
+})
