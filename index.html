@@ -8,6 +8,20 @@
   <title>Weather</title>
   <!-- Insert link to stylesheet here -->
   <link rel="stylesheet" type="text/css" href="styles/ud811.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name = "theme-color" content="blue" >
+
+  <!-- Add to home screen to safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Weather">
+
+  <link rel="apple-touch-icon" href="/images/icons/apple-60.png" sizes="60x60">
+  <link rel="apple-touch-icon" href="/images/icons/apple-76.png" sizes="76x76">
+  <link rel="apple-touch-icon" href="/images/icons/apple-120.png" sizes="120x120">
+  <link rel="apple-touch-icon" href="/images/icons/apple-152.png" sizes="152x152">
+  <link rel="apple-touch-icon" href="/images/icons/apple-167.png" sizes="167x167">
+  <link rel="apple-touch-icon" href="/images/icons/apple-180.png" sizes="180x180">
 </head>
 <body>
 
@@ -20,7 +34,7 @@
   <main class="main">
     <div class="card cardTemplate weather-forecast" hidden>
       <div class="location"></div>
-      <div class="date"></div>
+      <div class="date"  data-dt = "0" ></div>
       <div class="description"></div>
       <div class="current">
         <div class="visual">

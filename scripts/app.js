@@ -104,6 +104,14 @@
       app.container.appendChild(card);
       app.visibleCards[data.key] = card;
     }
+
+    //verify data is newer then what we already have 
+    var dateElem = card.querySelector('.date');
+    if(dateElem.getAttribute('data-dt') >= data.currently.time){
+      return;
+    } 
+    dateElem.setAttribute('data-dt', data.currently.time);
+    dateElem.textContent = new Date(data.currently.time * 1000);
     card.querySelector('.description').textContent = data.currently.summary;
     card.querySelector('.date').textContent =
       new Date(data.currently.time * 1000);
@@ -153,6 +161,17 @@
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function(key, label) {
     var url = weatherAPIUrlBase + key + '.json';
+    if('caches' in window){
+      caches.match(url).then(function(response){
+        if(response){
+          response.json().then((json) =>{
+            json.key = key;
+            json.label = label;
+            app.updateForecastCard(json)
+          });
+        }
+      });
+    }
     // Make the XHR to get the data, then update the card
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
@@ -199,11 +218,21 @@
       }
   })
 
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('./service-worker.js')
-    .then(() =>{
-      console.log('Service worker registered')
-    })
+  // var deferredPrompt;
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('../sw.js')
+      .then(function() {
+        console.log('Service worker registered!');
+      });
   }
+  
+  // window.addEventListener('beforeinstallprompt', function(event) {
+  //   console.log('beforeinstallprompt fired');
+  //   event.preventDefault();
+  //   deferredPrompt = event;
+  //   return false;
+  // });
 
 })();
